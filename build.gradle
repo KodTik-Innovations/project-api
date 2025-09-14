@@ -35,7 +35,8 @@ dependencies {
     implementation("commons-lang:commons-lang:2.6")
     implementation("org.apache.commons:commons-lang3:3.14.0")   
     implementation("com.google.guava:guava:33.4.6-jre")  
-    implementation("javax.inject:javax.inject:1")      
+    implementation("javax.inject:javax.inject:1")     
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.20-RC")
 }
 
 publishing {

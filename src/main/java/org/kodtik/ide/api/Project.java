@@ -53,4 +53,10 @@ public interface Project extends Comparable<Project> {
   int depthCompare(Project otherProject);
 
   int getDepth();
+
+  // void evaluate();
+
+  // boolean hasPlugin(Class<? extends Plugin<?>> cls);
+
+  // void apply(Map<String, ? extends Object> map);
 }
