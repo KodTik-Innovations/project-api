@@ -16,6 +16,8 @@ import org.kodtik.ide.api.Plugin;
 import org.kodtik.ide.api.Project;
 import org.kodtik.ide.api.ProjectState;
 import org.kodtik.ide.api.Task;
+import org.kodtik.ide.api.tasks.DefaultTask;
+
 import org.kodtik.ide.api.UnknownProjectException;
 import org.kodtik.ide.api.internal.file.FileResolver;
 import org.kodtik.ide.internal.Cast;
@@ -266,6 +268,15 @@ public abstract class DefaultProject implements ProjectInternal {
     this.buildDir = getFileResolver().resolve(path);
   }
 
+  public Task createTask(String name, Function1<? super DefaultTask, Unit> function1) {
+    String taskPath = getPath().equals(":") ? ":" + name : getPath() + ":" + name;
+
+    DefaultTask task = new DefaultTask(name, taskPath, this);
+    function1.invoke(task);
+    this.tasks.put(name, task);
+    return task;
+  }
+
   @Override
   public void evaluate(Function1<? super Project, Unit> function1) {
     function1.invoke(this);
@@ -299,8 +310,12 @@ public abstract class DefaultProject implements ProjectInternal {
   @Override
   public void apply(Map<String, ? extends Object> map) {
     Object obj = map.get("plugin");
-    if (obj != null) {}
+    if (obj != null) {
+      apply(obj.toString());
+    }
   }
+  
+  private void apply(String id) {}
 
   @Override
   public Task getTask(String str) {
