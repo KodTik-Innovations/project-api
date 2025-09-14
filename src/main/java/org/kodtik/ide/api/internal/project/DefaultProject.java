@@ -1,12 +1,18 @@
 package org.kodtik.ide.api.internal.project;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import org.kodtik.ide.api.Plugin;
 import org.kodtik.ide.api.Project;
+import org.kodtik.ide.api.ProjectState;
+import org.kodtik.ide.api.Task;
 import org.kodtik.ide.api.UnknownProjectException;
 import org.kodtik.ide.api.internal.file.FileResolver;
 import org.kodtik.ide.internal.Cast;
@@ -22,6 +28,10 @@ public abstract class DefaultProject implements ProjectInternal {
   private File buildDir;
   private Path projectPath;
 
+  private final List<Plugin<?>> plugins;
+  private ProjectState state;
+  private final Map<String, Task> tasks;
+
   @Nullable private final ProjectInternal parent;
 
   private final String name;
@@ -35,6 +45,11 @@ public abstract class DefaultProject implements ProjectInternal {
     this.buildFile = buildFile;
     this.parent = parent;
     this.name = name;
+
+    this.tasks = new LinkedHashMap();
+    this.plugins = new ArrayList();
+    this.state = ProjectState.NOT_LOADED;
+
     this.projectPath = path(name);
 
     if (parent == null) {
@@ -246,5 +261,31 @@ public abstract class DefaultProject implements ProjectInternal {
   @Deprecated
   public void setBuildDir(Object path) {
     this.buildDir = getFileResolver().resolve(path);
+  }
+
+  @Override
+  public void evaluate() {}
+
+  @Override
+  public boolean hasPlugin(Class<? extends Plugin<?>> cls) {
+    return false;
+  }
+
+  @Override
+  public void apply(Map<String, ? extends Object> map) {}
+
+  @Override
+  public Task getTask(String str) {
+    return this.tasks.get(str);
+  }
+
+  @Override
+  public Map<String, Task> getAllTasks() {
+    return this.tasks;
+  }
+
+  @Override
+  public List<Plugin<?>> getAppliedPlugins() {
+    return this.plugins;
   }
 }

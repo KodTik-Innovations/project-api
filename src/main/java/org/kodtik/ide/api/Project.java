@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
 import org.kodtik.ide.util.Path;
+import java.util.List;
 
 public interface Project extends Comparable<Project> {
   String DEFAULT_BUILD_FILE = "build.json";
@@ -54,9 +55,15 @@ public interface Project extends Comparable<Project> {
 
   int getDepth();
 
-  // void evaluate();
+  void evaluate();
 
-  // boolean hasPlugin(Class<? extends Plugin<?>> cls);
+  boolean hasPlugin(Class<? extends Plugin<?>> cls);
 
-  // void apply(Map<String, ? extends Object> map);
+  void apply(Map<String, ? extends Object> map);
+
+  Task getTask(String str);
+
+  Map<String, Task> getAllTasks();
+
+  List<Plugin<?>> getAppliedPlugins();
 }
