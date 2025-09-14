@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import org.kodtik.ide.util.Path;
 
 public interface Project extends Comparable<Project> {
@@ -55,7 +57,7 @@ public interface Project extends Comparable<Project> {
 
   int getDepth();
 
-  void evaluate();
+  void evaluate(Function1<? super Project, Unit> function1);
 
   boolean hasPlugin(Class<? extends Plugin<?>> cls);
 
@@ -66,4 +68,8 @@ public interface Project extends Comparable<Project> {
   Map<String, Task> getAllTasks();
 
   List<Plugin<?>> getAppliedPlugins();
+
+  void setState(ProjectState state);
+
+  ProjectState getState();
 }

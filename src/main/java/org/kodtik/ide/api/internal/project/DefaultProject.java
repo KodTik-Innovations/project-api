@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import org.kodtik.ide.api.Plugin;
 import org.kodtik.ide.api.Project;
 import org.kodtik.ide.api.ProjectState;
@@ -265,20 +267,19 @@ public abstract class DefaultProject implements ProjectInternal {
   }
 
   @Override
-  public void evaluate() {
-
-    this.state = ProjectState.CONFIGURING;
-
-    evaluateBuild();
-
-    for (Project project : getSubprojects()) {
-      project.evaluate();
-    }
-
-    this.state = ProjectState.CONFIGURED;
+  public void evaluate(Function1<? super Project, Unit> function1) {
+    function1.invoke(this);
   }
 
-  private void evaluateBuild() {}
+  @Override
+  public void setState(ProjectState state) {
+    this.state = state;
+  }
+
+  @Override
+  public ProjectState getState() {
+    return this.state;
+  }
 
   @Override
   public boolean hasPlugin(Class<? extends Plugin<?>> cls) {
