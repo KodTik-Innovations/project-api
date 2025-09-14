@@ -1,11 +1,11 @@
 package org.kodtik.ide.api;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
 import org.kodtik.ide.util.Path;
-import java.util.List;
 
 public interface Project extends Comparable<Project> {
   String DEFAULT_BUILD_FILE = "build.json";

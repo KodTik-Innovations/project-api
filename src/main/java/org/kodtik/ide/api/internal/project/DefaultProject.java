@@ -2,6 +2,7 @@ package org.kodtik.ide.api.internal.project;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -264,15 +265,41 @@ public abstract class DefaultProject implements ProjectInternal {
   }
 
   @Override
-  public void evaluate() {}
+  public void evaluate() {
+
+    this.state = ProjectState.CONFIGURING;
+
+    evaluateBuild();
+
+    for (Project project : getSubprojects()) {
+      project.evaluate();
+    }
+
+    this.state = ProjectState.CONFIGURED;
+  }
+
+  private void evaluateBuild() {}
 
   @Override
   public boolean hasPlugin(Class<? extends Plugin<?>> cls) {
+    List<Plugin<?>> iterable = this.plugins;
+    if ((iterable instanceof Collection) && ((Collection) iterable).isEmpty()) {
+      return false;
+    }
+    for (Plugin isInstance : iterable) {
+      if (cls.isInstance(isInstance)) {
+        return true;
+      }
+    }
+
     return false;
   }
 
   @Override
-  public void apply(Map<String, ? extends Object> map) {}
+  public void apply(Map<String, ? extends Object> map) {
+    Object obj = map.get("plugin");
+    if (obj != null) {}
+  }
 
   @Override
   public Task getTask(String str) {
