@@ -315,7 +315,14 @@ public abstract class DefaultProject implements ProjectInternal {
       return;
     }
 
-    if (obj instanceof Plugin) {
+    if (obj instanceof String) {
+      String pluginId = (String) obj;
+
+      if (pluginId.equals("hello-world")) {
+        apply(() -> new HelloWorldPlugin());
+      }
+
+    } else if (obj instanceof Plugin) {
       Plugin<Project> plugin = (Plugin<Project>) obj;
       apply(() -> plugin);
     }
