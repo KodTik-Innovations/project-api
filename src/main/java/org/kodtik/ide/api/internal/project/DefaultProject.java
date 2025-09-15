@@ -316,7 +316,7 @@ public abstract class DefaultProject implements ProjectInternal {
     }
 
     if (obj instanceof String) {
-      String pluginId = (String) obj;
+      String pluginId = obj.toString();
 
       if (pluginId.equals("hello-world")) {
         apply(() -> new HelloWorldPlugin());
