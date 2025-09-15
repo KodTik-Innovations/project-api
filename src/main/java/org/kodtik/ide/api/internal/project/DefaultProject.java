@@ -11,15 +11,16 @@ import java.util.TreeMap;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 import kotlin.jvm.functions.Function1;
 import org.kodtik.ide.api.Plugin;
 import org.kodtik.ide.api.Project;
 import org.kodtik.ide.api.ProjectState;
 import org.kodtik.ide.api.Task;
-import org.kodtik.ide.api.tasks.DefaultTask;
-
 import org.kodtik.ide.api.UnknownProjectException;
 import org.kodtik.ide.api.internal.file.FileResolver;
+import org.kodtik.ide.api.plugins.*;
+import org.kodtik.ide.api.tasks.DefaultTask;
 import org.kodtik.ide.internal.Cast;
 import org.kodtik.ide.util.Path;
 
@@ -310,12 +311,29 @@ public abstract class DefaultProject implements ProjectInternal {
   @Override
   public void apply(Map<String, ? extends Object> map) {
     Object obj = map.get("plugin");
-    if (obj != null) {
-      apply(obj.toString());
+    if (obj == null) {
+      return;
+    }
+
+    if (obj instanceof String) {
+      String pluginId = (String) obj;
+
+      if (pluginId.equals("hello-world")) {
+        apply(() -> new HelloWorldPlugin());
+      }
+
+    } else if (obj instanceof Plugin) {
+      Plugin<Project> plugin = (Plugin<Project>) obj;
+      apply(() -> plugin);
     }
   }
-  
-  private void apply(String id) {}
+
+  @Override
+  public <T extends Project> void apply(Function0<? extends Plugin<T>> function0) {
+    Plugin plugin = (Plugin) function0.invoke();
+    this.plugins.add(plugin);
+    plugin.apply(this);
+  }
 
   @Override
   public Task getTask(String str) {

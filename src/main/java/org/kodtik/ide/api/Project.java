@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
 import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 import kotlin.jvm.functions.Function1;
 import org.kodtik.ide.util.Path;
 
@@ -62,6 +63,8 @@ public interface Project extends Comparable<Project> {
   boolean hasPlugin(Class<? extends Plugin<?>> cls);
 
   void apply(Map<String, ? extends Object> map);
+
+  <T extends Project> void apply(Function0<? extends Plugin<T>> function0);
 
   Task getTask(String str);
 
