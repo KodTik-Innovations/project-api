@@ -18,12 +18,13 @@ public class HelloWorldPlugin implements Plugin<Project> {
               task.setGroup("test");
               task.setDescription("Hello World test");
 
-              task.doLast(t -> {
-                System.out.println("helloworld done.");
-                return Unit.INSTANCE;          
-              });
+              task.doLast(
+                  t -> {
+                    System.out.println("helloworld done.");
+                    return Unit.INSTANCE;
+                  });
 
-              return Unit.INSTANCE; 
+              return Unit.INSTANCE;
             });
   }
 }
