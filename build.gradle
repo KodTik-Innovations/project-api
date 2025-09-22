@@ -2,7 +2,7 @@ plugins {
     id 'java-library'
     id 'maven-publish'    
     id 'com.diffplug.spotless' version '7.0.3'
-    id 'org.jetbrains.kotlin.jvm' version '2.2.20-RC' 
+    id 'org.jetbrains.kotlin.jvm' version '2.2.20' 
     id 'org.jlleitschuh.gradle.ktlint' version '12.1.0'   
 }
 
@@ -33,7 +33,7 @@ spotless {
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(24)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 
@@ -44,7 +44,7 @@ dependencies {
     implementation("org.apache.commons:commons-lang3:3.14.0")   
     implementation("com.google.guava:guava:33.4.6-jre")  
     implementation("javax.inject:javax.inject:1")     
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.20-RC")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.20")
 }
 
 publishing {
@@ -52,7 +52,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'org.kodtik.ide'
             artifactId = 'project-api'
-            version = '1.0.5' 
+            version = '1.0.6' 
                                 
             from components.java
         }
