@@ -68,9 +68,9 @@ public interface Project extends Comparable<Project> {
 
   Task getTask(String str);
 
-  Map<String, Task> getAllTasks();
+  Map<String, Task> getTasks();
 
-  List<Plugin<?>> getAppliedPlugins();
+  List<Plugin<?>> getPlugins();
 
   void setState(ProjectState state);
 

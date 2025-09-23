@@ -341,12 +341,12 @@ public abstract class DefaultProject implements ProjectInternal {
   }
 
   @Override
-  public Map<String, Task> getAllTasks() {
+  public Map<String, Task> getTasks() {
     return this.tasks;
   }
 
   @Override
-  public List<Plugin<?>> getAppliedPlugins() {
+  public List<Plugin<?>> getPlugins() {
     return this.plugins;
   }
 }

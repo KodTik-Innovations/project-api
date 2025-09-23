@@ -31,4 +31,8 @@ public interface Task {
   void setDescription(String str);
 
   void setGroup(String str);
+
+  void setStatus(Status status);
+
+  Status getStatus();
 }

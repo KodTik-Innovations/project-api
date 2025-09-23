@@ -14,6 +14,7 @@ public class DefaultTask implements Task {
   private String description;
   private final Set<String> dependencies = new HashSet<>();
   private final List<TaskAction> actions = new ArrayList<>();
+  private Status status;
 
   public DefaultTask(String name, String path, Project project) {
     this.name = name;
@@ -101,5 +102,15 @@ public class DefaultTask implements Task {
   @Override
   public void setGroup(String group) {
     this.group = group;
+  }
+
+  @Override
+  public void setStatus(Status status) {
+    this.status = status;
+  }
+
+  @Override
+  public Status getStatus() {
+    return status;
   }
 }
