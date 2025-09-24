@@ -31,4 +31,6 @@ public interface Settings {
 
   @Nullable
   ProjectDescriptor findProject(File projectDir);
+
+  Object getSettingsModel();
 }

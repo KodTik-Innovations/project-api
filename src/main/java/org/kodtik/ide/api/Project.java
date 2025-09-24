@@ -75,4 +75,6 @@ public interface Project extends Comparable<Project> {
   void setState(ProjectState state);
 
   ProjectState getState();
+
+  Object getBuildModel();
 }

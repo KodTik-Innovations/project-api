@@ -19,6 +19,7 @@ public abstract class DefaultSettings implements SettingsInternal {
   private DefaultProjectDescriptor rootProjectDescriptor;
 
   private DefaultProjectDescriptor defaultProjectDescriptor;
+  private Object settingsModel;
 
   public DefaultSettings(File settingsDir) {
     this.settingsDir = settingsDir;
@@ -149,6 +150,15 @@ public abstract class DefaultSettings implements SettingsInternal {
 
   public void setSettingsDir(File settingsDir) {
     this.settingsDir = settingsDir;
+  }
+
+  @Override
+  public Object getSettingsModel() {
+    return settingsModel;
+  }
+
+  public void setSettingsModel(Object settingsModel) {
+    this.settingsModel = settingsModel;
   }
 
   @Inject

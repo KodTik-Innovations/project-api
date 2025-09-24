@@ -43,6 +43,7 @@ public abstract class DefaultProject implements ProjectInternal {
   private final String name;
 
   private final int depth;
+  private Object buildModel;
 
   public DefaultProject(
       String name, @Nullable ProjectInternal parent, File projectDir, File buildFile) {
@@ -348,5 +349,14 @@ public abstract class DefaultProject implements ProjectInternal {
   @Override
   public List<Plugin<?>> getPlugins() {
     return this.plugins;
+  }
+
+  @Override
+  public Object getBuildModel() {
+    return buildModel;
+  }
+
+  public void setBuildModel(Object buildModel) {
+    this.buildModel = buildModel;
   }
 }
