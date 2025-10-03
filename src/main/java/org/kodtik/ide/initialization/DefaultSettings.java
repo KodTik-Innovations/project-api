@@ -11,10 +11,12 @@ import org.kodtik.ide.api.internal.SettingsInternal;
 import org.kodtik.ide.api.internal.file.FileResolver;
 import org.kodtik.ide.api.internal.project.ProjectRegistry;
 import org.kodtik.ide.internal.scripts.ScriptFileResolver;
+import org.kodtik.ide.internal.scripts.ScriptFileUtil;
 
 public abstract class DefaultSettings implements SettingsInternal {
 
   private File settingsDir;
+  private File settingsFile;
 
   private DefaultProjectDescriptor rootProjectDescriptor;
 
@@ -23,6 +25,9 @@ public abstract class DefaultSettings implements SettingsInternal {
 
   public DefaultSettings(File settingsDir) {
     this.settingsDir = settingsDir;
+    this.settingsFile =
+        getScriptFileResolver()
+            .resolveScriptFile(settingsDir, ScriptFileUtil.SETTINGS_FILE_BASE_NAME);
     this.rootProjectDescriptor =
         createProjectDescriptor(null, getProjectName(settingsDir), settingsDir);
   }
@@ -88,7 +93,7 @@ public abstract class DefaultSettings implements SettingsInternal {
     int size = 0;
     for (String projectPath : projectPaths) {
       size++;
-      if (size != 1) {
+      if (size > 1) {
         throw new InvalidUserDataException(
             "Multiple projects are not supported. Path: " + projectPath);
       }
@@ -150,6 +155,15 @@ public abstract class DefaultSettings implements SettingsInternal {
 
   public void setSettingsDir(File settingsDir) {
     this.settingsDir = settingsDir;
+  }
+
+  @Override
+  public File getSettingsFile() {
+    return settingsFile;
+  }
+
+  public void setSettingsFile(File settingsFile) {
+    this.settingsFile = settingsFile;
   }
 
   @Override
