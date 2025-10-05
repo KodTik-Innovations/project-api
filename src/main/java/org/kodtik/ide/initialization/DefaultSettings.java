@@ -90,6 +90,15 @@ public abstract class DefaultSettings implements SettingsInternal {
 
   @Override
   public void include(Iterable<String> projectPaths) {
+
+    if (projectPaths == null) {
+      return;
+    }
+
+    if (!projectPaths.iterator().hasNext()) {
+      return;
+    }
+
     int size = 0;
     for (String projectPath : projectPaths) {
       size++;
