@@ -19,7 +19,6 @@ import org.kodtik.ide.api.ProjectState;
 import org.kodtik.ide.api.Task;
 import org.kodtik.ide.api.UnknownProjectException;
 import org.kodtik.ide.api.internal.file.FileResolver;
-import org.kodtik.ide.api.plugins.*;
 import org.kodtik.ide.api.tasks.DefaultTask;
 import org.kodtik.ide.internal.Cast;
 import org.kodtik.ide.util.Path;
@@ -316,14 +315,7 @@ public abstract class DefaultProject implements ProjectInternal {
       return;
     }
 
-    if (obj instanceof String) {
-      String pluginId = (String) obj;
-
-      if (pluginId.equals("hello-world")) {
-        apply(() -> new HelloWorldPlugin());
-      }
-
-    } else if (obj instanceof Plugin) {
+    if (obj instanceof Plugin) {
       Plugin<Project> plugin = (Plugin<Project>) obj;
       apply(() -> plugin);
     }

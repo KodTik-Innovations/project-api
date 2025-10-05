@@ -30,13 +30,6 @@ spotless {
     }
 }
 
-// Apply a specific Java toolchain to ease working on different environments.
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
-
 dependencies {
     implementation("com.google.code.findbugs:jsr305:3.0.2")
     implementation("commons-io:commons-io:2.15.1") 
@@ -52,7 +45,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'org.kodtik.ide'
             artifactId = 'project-api'
-            version = '1.2.0' 
+            version = '1.2.3' 
                                 
             from components.java
         }
