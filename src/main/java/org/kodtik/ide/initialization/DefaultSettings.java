@@ -3,7 +3,6 @@ package org.kodtik.ide.initialization;
 import java.io.File;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-import org.kodtik.ide.api.InvalidUserDataException;
 import org.kodtik.ide.api.UnknownProjectException;
 import org.kodtik.ide.api.initialization.ProjectDescriptor;
 import org.kodtik.ide.api.initialization.Settings;
@@ -90,22 +89,7 @@ public abstract class DefaultSettings implements SettingsInternal {
 
   @Override
   public void include(Iterable<String> projectPaths) {
-
-    if (projectPaths == null) {
-      return;
-    }
-
-    if (!projectPaths.iterator().hasNext()) {
-      return;
-    }
-
-    int size = 0;
     for (String projectPath : projectPaths) {
-      size++;
-      if (size > 1) {
-        throw new InvalidUserDataException(
-            "Multiple projects are not supported. Path: " + projectPath);
-      }
       String subPath = "";
       String[] pathElements = removeTrailingColon(projectPath).split(":");
       DefaultProjectDescriptor parentProjectDescriptor = rootProjectDescriptor;
