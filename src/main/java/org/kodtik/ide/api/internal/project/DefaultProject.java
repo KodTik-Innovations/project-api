@@ -13,6 +13,8 @@ import javax.inject.Inject;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 import kotlin.jvm.functions.Function1;
+import org.eclipse.aether.artifact.Artifact;
+import org.eclipse.aether.repository.ArtifactRepository;
 import org.kodtik.ide.api.Plugin;
 import org.kodtik.ide.api.Project;
 import org.kodtik.ide.api.ProjectState;
@@ -34,6 +36,9 @@ public abstract class DefaultProject implements ProjectInternal {
   private Path projectPath;
 
   private final List<Plugin<?>> plugins;
+  private final List<ArtifactRepository> repositories;
+  private final List<Artifact> dependencies;
+
   private ProjectState state;
   private final Map<String, Task> tasks;
 
@@ -53,7 +58,11 @@ public abstract class DefaultProject implements ProjectInternal {
     this.name = name;
 
     this.tasks = new LinkedHashMap();
+
     this.plugins = new ArrayList();
+    this.repositories = new ArrayList();
+    this.dependencies = new ArrayList();
+
     this.state = ProjectState.NOT_LOADED;
 
     this.projectPath = path(name);
@@ -341,6 +350,16 @@ public abstract class DefaultProject implements ProjectInternal {
   @Override
   public List<Plugin<?>> getPlugins() {
     return this.plugins;
+  }
+
+  @Override
+  public List<ArtifactRepository> getRepositories() {
+    return repositories;
+  }
+
+  @Override
+  public List<Artifact> getDependencies() {
+    return dependencies;
   }
 
   @Override

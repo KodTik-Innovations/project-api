@@ -8,6 +8,8 @@ import javax.annotation.Nullable;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 import kotlin.jvm.functions.Function1;
+import org.eclipse.aether.artifact.Artifact;
+import org.eclipse.aether.repository.ArtifactRepository;
 import org.kodtik.ide.util.Path;
 
 public interface Project extends Comparable<Project> {
@@ -71,6 +73,10 @@ public interface Project extends Comparable<Project> {
   Map<String, Task> getTasks();
 
   List<Plugin<?>> getPlugins();
+
+  List<ArtifactRepository> getRepositories();
+
+  List<Artifact> getDependencies();
 
   void setState(ProjectState state);
 
