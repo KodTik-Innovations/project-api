@@ -25,6 +25,7 @@ import org.kodtik.ide.api.artifacts.dsl.RepositoryHandler;
 import org.kodtik.ide.api.internal.file.FileResolver;
 import org.kodtik.ide.api.tasks.DefaultTask;
 import org.kodtik.ide.internal.Cast;
+import org.kodtik.ide.plugin.management.internal.DefaultPluginHandler;
 import org.kodtik.ide.plugin.management.internal.PluginHandler;
 import org.kodtik.ide.util.Path;
 
@@ -356,7 +357,9 @@ public abstract class DefaultProject implements ProjectInternal {
   }
 
   @Override
-  public void plugins(Function1<? super PluginHandler, Unit> function1) {}
+  public void plugins(Function1<? super PluginHandler, Unit> function1) {
+    function1.invoke(new DefaultPluginHandler(this));
+  }
 
   @Override
   public List<ArtifactRepository> getRepositories() {
@@ -364,7 +367,9 @@ public abstract class DefaultProject implements ProjectInternal {
   }
 
   @Override
-  public void repositories(Function1<? super RepositoryHandler, Unit> function1) {}
+  public void repositories(Function1<? super RepositoryHandler, Unit> function1) {
+    //  function1.invoke(new AbstractRepositoryHandler(this));
+  }
 
   @Override
   public List<Artifact> getDependencies() {
@@ -372,7 +377,9 @@ public abstract class DefaultProject implements ProjectInternal {
   }
 
   @Override
-  public void dependencies(Function1<? super DependencyHandler, Unit> function1) {}
+  public void dependencies(Function1<? super DependencyHandler, Unit> function1) {
+    // function1.invoke(new DependencyHandler(this));
+  }
 
   @Override
   public Object getBuildModel() {
