@@ -20,6 +20,8 @@ import org.kodtik.ide.api.Project;
 import org.kodtik.ide.api.ProjectState;
 import org.kodtik.ide.api.Task;
 import org.kodtik.ide.api.UnknownProjectException;
+import org.kodtik.ide.api.artifacts.dsl.DefaultDependencyHandler;
+import org.kodtik.ide.api.artifacts.dsl.DefaultRepositoryHandler;
 import org.kodtik.ide.api.artifacts.dsl.DependencyHandler;
 import org.kodtik.ide.api.artifacts.dsl.RepositoryHandler;
 import org.kodtik.ide.api.internal.file.FileResolver;
@@ -368,7 +370,7 @@ public abstract class DefaultProject implements ProjectInternal {
 
   @Override
   public void repositories(Function1<? super RepositoryHandler, Unit> function1) {
-    //  function1.invoke(new AbstractRepositoryHandler(this));
+    function1.invoke(new DefaultRepositoryHandler(this));
   }
 
   @Override
@@ -378,7 +380,7 @@ public abstract class DefaultProject implements ProjectInternal {
 
   @Override
   public void dependencies(Function1<? super DependencyHandler, Unit> function1) {
-    // function1.invoke(new DependencyHandler(this));
+    function1.invoke(new DefaultDependencyHandler(this));
   }
 
   @Override
