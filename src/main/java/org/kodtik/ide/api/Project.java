@@ -10,6 +10,9 @@ import kotlin.jvm.functions.Function0;
 import kotlin.jvm.functions.Function1;
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.repository.ArtifactRepository;
+import org.kodtik.ide.api.artifacts.dsl.DependencyHandler;
+import org.kodtik.ide.api.artifacts.dsl.RepositoryHandler;
+import org.kodtik.ide.plugin.management.internal.PluginHandler;
 import org.kodtik.ide.util.Path;
 
 public interface Project extends Comparable<Project> {
@@ -74,9 +77,15 @@ public interface Project extends Comparable<Project> {
 
   List<Plugin<?>> getPlugins();
 
+  void plugins(Function1<? super PluginHandler, Unit> function1);
+
   List<ArtifactRepository> getRepositories();
 
+  void repositories(Function1<? super RepositoryHandler, Unit> function1);
+
   List<Artifact> getDependencies();
+
+  void dependencies(Function1<? super DependencyHandler, Unit> function1);
 
   void setState(ProjectState state);
 
