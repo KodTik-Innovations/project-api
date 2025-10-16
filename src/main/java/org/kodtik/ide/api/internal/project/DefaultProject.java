@@ -20,14 +20,11 @@ import org.kodtik.ide.api.Project;
 import org.kodtik.ide.api.ProjectState;
 import org.kodtik.ide.api.Task;
 import org.kodtik.ide.api.UnknownProjectException;
-import org.kodtik.ide.api.artifacts.dsl.DefaultDependencyHandler;
-import org.kodtik.ide.api.artifacts.dsl.DefaultRepositoryHandler;
 import org.kodtik.ide.api.artifacts.dsl.DependencyHandler;
 import org.kodtik.ide.api.artifacts.dsl.RepositoryHandler;
 import org.kodtik.ide.api.internal.file.FileResolver;
 import org.kodtik.ide.api.tasks.DefaultTask;
 import org.kodtik.ide.internal.Cast;
-import org.kodtik.ide.plugin.management.internal.DefaultPluginHandler;
 import org.kodtik.ide.plugin.management.internal.PluginHandler;
 import org.kodtik.ide.util.Path;
 
@@ -44,6 +41,10 @@ public abstract class DefaultProject implements ProjectInternal {
   private final List<Plugin<?>> plugins;
   private final List<ArtifactRepository> repositories;
   private final List<Artifact> dependencies;
+
+  private PluginHandler pluginHandler;
+  private RepositoryHandler repositoryHandler;
+  private DependencyHandler dependencyHandler;
 
   private ProjectState state;
   private final Map<String, Task> tasks;
@@ -359,8 +360,9 @@ public abstract class DefaultProject implements ProjectInternal {
   }
 
   @Override
-  public void plugins(Function1<? super PluginHandler, Unit> function1) {
-    function1.invoke(new DefaultPluginHandler(this));
+  public void plugins(Function1<? super PluginHandler, Plugin<Project>> function1) {
+    Plugin<Project> plugin = (Plugin<Project>) function1.invoke(pluginHandler);
+    apply(() -> plugin);
   }
 
   @Override
@@ -369,8 +371,9 @@ public abstract class DefaultProject implements ProjectInternal {
   }
 
   @Override
-  public void repositories(Function1<? super RepositoryHandler, Unit> function1) {
-    function1.invoke(new DefaultRepositoryHandler(this));
+  public void repositories(Function1<? super RepositoryHandler, ArtifactRepository> function1) {
+    ArtifactRepository repository = (ArtifactRepository) function1.invoke(repositoryHandler);
+    this.repositories.add(repository);
   }
 
   @Override
@@ -379,8 +382,9 @@ public abstract class DefaultProject implements ProjectInternal {
   }
 
   @Override
-  public void dependencies(Function1<? super DependencyHandler, Unit> function1) {
-    function1.invoke(new DefaultDependencyHandler(this));
+  public void dependencies(Function1<? super DependencyHandler, Artifact> function1) {
+    Artifact artifact = (Artifact) function1.invoke(dependencyHandler);
+    this.dependencies.add(artifact);
   }
 
   @Override
@@ -390,5 +394,17 @@ public abstract class DefaultProject implements ProjectInternal {
 
   public void setBuildModel(Object buildModel) {
     this.buildModel = buildModel;
+  }
+
+  public void setPluginHandler(PluginHandler handler) {
+    this.pluginHandler = handler;
+  }
+
+  public void setRepositoryHandler(RepositoryHandler handler) {
+    this.repositoryHandler = handler;
+  }
+
+  public void setDependencyHandler(DependencyHandler handler) {
+    this.dependencyHandler = handler;
   }
 }

@@ -77,15 +77,15 @@ public interface Project extends Comparable<Project> {
 
   List<Plugin<?>> getPlugins();
 
-  void plugins(Function1<? super PluginHandler, Unit> function1);
+  void plugins(Function1<? super PluginHandler, Plugin<Project>> function1);
 
   List<ArtifactRepository> getRepositories();
 
-  void repositories(Function1<? super RepositoryHandler, Unit> function1);
+  void repositories(Function1<? super RepositoryHandler, ArtifactRepository> function1);
 
   List<Artifact> getDependencies();
 
-  void dependencies(Function1<? super DependencyHandler, Unit> function1);
+  void dependencies(Function1<? super DependencyHandler, Artifact> function1);
 
   void setState(ProjectState state);
 
