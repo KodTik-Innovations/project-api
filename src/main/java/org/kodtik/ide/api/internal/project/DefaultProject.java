@@ -1,31 +1,21 @@
 package org.kodtik.ide.api.internal.project;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import kotlin.Unit;
-import kotlin.jvm.functions.Function0;
 import kotlin.jvm.functions.Function1;
-import org.eclipse.aether.artifact.Artifact;
-import org.eclipse.aether.repository.ArtifactRepository;
-import org.kodtik.ide.api.Plugin;
 import org.kodtik.ide.api.Project;
 import org.kodtik.ide.api.ProjectState;
 import org.kodtik.ide.api.Task;
 import org.kodtik.ide.api.UnknownProjectException;
-import org.kodtik.ide.api.artifacts.dsl.DependencyHandler;
-import org.kodtik.ide.api.artifacts.dsl.RepositoryHandler;
 import org.kodtik.ide.api.internal.file.FileResolver;
 import org.kodtik.ide.api.tasks.DefaultTask;
 import org.kodtik.ide.internal.Cast;
-import org.kodtik.ide.plugin.management.internal.PluginHandler;
 import org.kodtik.ide.util.Path;
 
 public abstract class DefaultProject implements ProjectInternal {
@@ -37,14 +27,6 @@ public abstract class DefaultProject implements ProjectInternal {
   private final File buildFile;
   private File buildDir;
   private Path projectPath;
-
-  private final List<Plugin<?>> plugins;
-  private final List<ArtifactRepository> repositories;
-  private final List<Artifact> dependencies;
-
-  private PluginHandler pluginHandler;
-  private RepositoryHandler repositoryHandler;
-  private DependencyHandler dependencyHandler;
 
   private ProjectState state;
   private final Map<String, Task> tasks;
@@ -65,10 +47,6 @@ public abstract class DefaultProject implements ProjectInternal {
     this.name = name;
 
     this.tasks = new LinkedHashMap();
-
-    this.plugins = new ArrayList();
-    this.repositories = new ArrayList();
-    this.dependencies = new ArrayList();
 
     this.state = ProjectState.NOT_LOADED;
 
@@ -310,41 +288,6 @@ public abstract class DefaultProject implements ProjectInternal {
   }
 
   @Override
-  public boolean hasPlugin(Class<? extends Plugin<?>> cls) {
-    List<Plugin<?>> iterable = this.plugins;
-    if ((iterable instanceof Collection) && ((Collection) iterable).isEmpty()) {
-      return false;
-    }
-    for (Plugin isInstance : iterable) {
-      if (cls.isInstance(isInstance)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  @Override
-  public void apply(Map<String, ? extends Object> map) {
-    Object obj = map.get("plugin");
-    if (obj == null) {
-      return;
-    }
-
-    if (obj instanceof Plugin) {
-      Plugin<Project> plugin = (Plugin<Project>) obj;
-      apply(() -> plugin);
-    }
-  }
-
-  @Override
-  public <T extends Project> void apply(Function0<? extends Plugin<T>> function0) {
-    Plugin plugin = (Plugin) function0.invoke();
-    this.plugins.add(plugin);
-    plugin.apply(this);
-  }
-
-  @Override
   public Task getTask(String str) {
     return this.tasks.get(str);
   }
@@ -355,56 +298,11 @@ public abstract class DefaultProject implements ProjectInternal {
   }
 
   @Override
-  public List<Plugin<?>> getPlugins() {
-    return this.plugins;
-  }
-
-  @Override
-  public void plugins(Function1<? super PluginHandler, Plugin<Project>> function1) {
-    Plugin<Project> plugin = (Plugin<Project>) function1.invoke(pluginHandler);
-    apply(() -> plugin);
-  }
-
-  @Override
-  public List<ArtifactRepository> getRepositories() {
-    return repositories;
-  }
-
-  @Override
-  public void repositories(Function1<? super RepositoryHandler, ArtifactRepository> function1) {
-    ArtifactRepository repository = (ArtifactRepository) function1.invoke(repositoryHandler);
-    this.repositories.add(repository);
-  }
-
-  @Override
-  public List<Artifact> getDependencies() {
-    return dependencies;
-  }
-
-  @Override
-  public void dependencies(Function1<? super DependencyHandler, Artifact> function1) {
-    Artifact artifact = (Artifact) function1.invoke(dependencyHandler);
-    this.dependencies.add(artifact);
-  }
-
-  @Override
   public Object getBuildModel() {
     return buildModel;
   }
 
   public void setBuildModel(Object buildModel) {
     this.buildModel = buildModel;
-  }
-
-  public void setPluginHandler(PluginHandler handler) {
-    this.pluginHandler = handler;
-  }
-
-  public void setRepositoryHandler(RepositoryHandler handler) {
-    this.repositoryHandler = handler;
-  }
-
-  public void setDependencyHandler(DependencyHandler handler) {
-    this.dependencyHandler = handler;
   }
 }

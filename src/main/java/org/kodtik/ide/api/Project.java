@@ -1,18 +1,11 @@
 package org.kodtik.ide.api;
 
 import java.io.File;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
 import kotlin.Unit;
-import kotlin.jvm.functions.Function0;
 import kotlin.jvm.functions.Function1;
-import org.eclipse.aether.artifact.Artifact;
-import org.eclipse.aether.repository.ArtifactRepository;
-import org.kodtik.ide.api.artifacts.dsl.DependencyHandler;
-import org.kodtik.ide.api.artifacts.dsl.RepositoryHandler;
-import org.kodtik.ide.plugin.management.internal.PluginHandler;
 import org.kodtik.ide.util.Path;
 
 public interface Project extends Comparable<Project> {
@@ -65,27 +58,9 @@ public interface Project extends Comparable<Project> {
 
   void evaluate(Function1<? super Project, Unit> function1);
 
-  boolean hasPlugin(Class<? extends Plugin<?>> cls);
-
-  void apply(Map<String, ? extends Object> map);
-
-  <T extends Project> void apply(Function0<? extends Plugin<T>> function0);
-
   Task getTask(String str);
 
   Map<String, Task> getTasks();
-
-  List<Plugin<?>> getPlugins();
-
-  void plugins(Function1<? super PluginHandler, Plugin<Project>> function1);
-
-  List<ArtifactRepository> getRepositories();
-
-  void repositories(Function1<? super RepositoryHandler, ArtifactRepository> function1);
-
-  List<Artifact> getDependencies();
-
-  void dependencies(Function1<? super DependencyHandler, Artifact> function1);
 
   void setState(ProjectState state);
 
